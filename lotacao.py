@@ -48,9 +48,9 @@ try:
 
     # Definir cores para cada unidade (mais sóbrias para o tema escuro)
     cores_unidades = {
-        'Unid. 1': PRIMARY_BLUE,
-        'Unid. 2': ACCENT1,
-        'Unid. 3': ACCENT3
+        'Unid. 1': '#1976D2',  # Vivid Blue
+        'Unid. 2': '#43A047',  # Vivid Green
+        'Unid. 3': '#E53935'   # Vivid Red
     }
 
     # Estatísticas
