@@ -87,7 +87,7 @@ try:
     with col2:
         # Gráfico 3: Comparativo de Médias por Unidade
         st.subheader("Comparativo de Médias por Unidade")
-        fig3, ax3 = plt.subplots(figsize=(12, 6))
+        fig3, ax3 = plt.subplots(figsize=(15, 10))
         media_ocupacao = df.groupby('Unidade')['Quantidade_Atual'].mean()
         media_capacidade = df.groupby('Unidade')['Capacidade'].mean()
         total_ocupacao = df.groupby('Unidade')['Quantidade_Atual'].sum()
@@ -124,7 +124,7 @@ try:
     # Gráfico 2: Taxa de Ocupação por Turma
     with col1:
         st.subheader("Taxa de Ocupação por Turma")
-        fig2, ax2 = plt.subplots(figsize=(15, 8))
+        fig2, ax2 = plt.subplots(figsize=(15, 10))
         plt.subplots_adjust(top=0.85)
 
         taxa_ocupacao = (df_sorted['Quantidade_Atual'] / df_sorted['Capacidade'] * 100)
