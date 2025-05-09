@@ -14,7 +14,7 @@ st.markdown("""
         padding: 20px;
         margin-top: 40px;
         margin-bottom: 20px;
-        border-bottom: 2px solid #1E88E5;
+        border-bottom: 2px solid #333;
         font-family: Arial, sans-serif;
         font-weight: bold;
         text-transform: uppercase;
