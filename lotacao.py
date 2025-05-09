@@ -20,7 +20,7 @@ try:
     # Estatísticas
     st.markdown("""
         <h2 style='
-            text-align: center;
+            text-align: left;
             color: #333;
             font-size: 32px;
             padding: 20px;
@@ -33,7 +33,7 @@ try:
         # Título da unidade centralizado e estilizado
         st.markdown(f"""
             <h3 style='
-                text-align: center;
+                text-align: left;
                 color: #333;
                 font-size: 24px;
                 padding: 10px;
