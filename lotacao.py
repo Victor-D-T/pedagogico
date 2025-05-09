@@ -12,7 +12,7 @@ st.markdown("""
         color: #333;
         font-size: 32px;
         padding: 20px;
-        margin-top: 40px;
+        margin-top: 20px;
         margin-bottom: 20px;
         font-family: Arial, sans-serif;
         font-weight: bold;
