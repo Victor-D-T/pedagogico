@@ -9,7 +9,7 @@ st.set_page_config(page_title="Análise de Lotação", layout="wide")
 # Paleta de cores do tema
 DARK_BLUE = "#16213E"
 CARD_BLUE = "#22304A"
-PRIMARY_BLUE = "#1976D2"
+PRIMARY_BLUE = "#2196F3"
 TEXT_COLOR = "#F5F6FA"
 ACCENT1 = "#00B4D8"
 ACCENT2 = "#FFD166"
