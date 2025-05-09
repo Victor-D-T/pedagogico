@@ -57,7 +57,7 @@ try:
     st.markdown(f"""
         <h2 style='
             text-align: left;
-            color: {PRIMARY_BLUE};
+            color: {TEXT_COLOR};
             font-size: 28px;
             margin-top: 30px;
             margin-bottom: 10px;
@@ -98,7 +98,7 @@ try:
     st.markdown(f"""
         <h2 style='
             text-align: left;
-            color: {PRIMARY_BLUE};
+            color: {TEXT_COLOR};
             font-size: 26px;
             margin-top: 30px;
             margin-bottom: 10px;
