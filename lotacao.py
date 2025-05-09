@@ -160,7 +160,7 @@ try:
         st.markdown(f"""
             <h3 style='
                 text-align: left;
-                color: {PRIMARY_BLUE};
+                color: {TEXT_COLOR};
                 font-size: 22px;
                 margin-bottom: 10px;
             '>Taxa de Ocupação por Turma</h3>
@@ -204,7 +204,7 @@ try:
         st.markdown(f"""
             <h3 style='
                 text-align: left;
-                color: {PRIMARY_BLUE};
+                color: {TEXT_COLOR};
                 font-size: 22px;
                 margin-bottom: 10px;
             '>Comparativo de Médias por Unidade</h3>
