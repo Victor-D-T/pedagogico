@@ -1,7 +1,7 @@
 [theme]
 base = "dark"
 primaryColor = "#1976D2"              # Strong blue for highlights/buttons
-backgroundColor = "#0D1B2A"           # Deep dark blue for main background
-secondaryBackgroundColor = "#1B263B"  # Slightly lighter dark blue for cards/sidebars
+backgroundColor = "#16213E"           # Deep, rich dark blue for main background
+secondaryBackgroundColor = "#1A1A2E"  # Slightly lighter dark blue for cards/sidebars
 textColor = "#F5F6FA"                 # Very light for contrast
 font = "sans serif"
