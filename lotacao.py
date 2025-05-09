@@ -33,7 +33,7 @@ try:
 
 
     st.subheader("Ocupação vs Capacidade por Turma")
-    fig1, ax1 = plt.subplots(figsize=(22, 7))
+    fig1, ax1 = plt.subplots(figsize=(20, 6))
     plt.subplots_adjust(top=0.85)
 
     x = np.arange(len(df_sorted['TURMA']))
