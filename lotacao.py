@@ -18,7 +18,7 @@ st.markdown("""
         text-transform: uppercase;
     '>Análise de Lotação das Turmas</h1>
     <p style='font-size:18px; color:#555;'>
-        Este painel apresenta a ocupação das turmas por unidade escolar, permitindo uma visão rápida da capacidade e lotação atual.
+        Este painel apresenta a ocupação das turmas por unidade escolar e alguns dados estatísticos.
     </p>
 """, unsafe_allow_html=True)
 

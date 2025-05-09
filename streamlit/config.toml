@@ -1,0 +1,7 @@
+[theme]
+base="dark"
+primaryColor="#0D47A1"         # Dark blue
+backgroundColor="#102542"      # Very dark blue
+secondaryBackgroundColor="#1B3358"  # Slightly lighter dark blue
+textColor="#FFFFFF"
+font="sans serif"
