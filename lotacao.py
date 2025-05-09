@@ -124,7 +124,7 @@ try:
     # Gráfico 2: Taxa de Ocupação por Turma
     with col1:
         st.subheader("Taxa de Ocupação por Turma")
-        fig2, ax2 = plt.subplots(figsize=(15, 10))
+        fig2, ax2 = plt.subplots(figsize=(15, 8))
         plt.subplots_adjust(top=0.85)
 
         taxa_ocupacao = (df_sorted['Quantidade_Atual'] / df_sorted['Capacidade'] * 100)
