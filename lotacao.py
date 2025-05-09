@@ -13,9 +13,59 @@ try:
     df = pd.DataFrame(data)
     df['Unidade'] = df['SALA'].str.split('-').str[0].str.strip()
     df_sorted = df.sort_values(['Unidade', 'Quantidade_Atual'], ascending=[True, False])
-
+    
     # Definir cores para cada unidade
     cores_unidades = {'Unid. 1': 'skyblue', 'Unid. 2': 'lightgreen', 'Unid. 3': 'salmon'}
+
+    # Gráfico 3: Comparativo de Médias por Unidade
+    st.subheader("Comparativo de Médias por Unidade")
+    fig3, ax3 = plt.subplots(figsize=(12, 6))
+    media_ocupacao = df.groupby('Unidade')['Quantidade_Atual'].mean()
+    media_capacidade = df.groupby('Unidade')['Capacidade'].mean()
+    total_ocupacao = df.groupby('Unidade')['Quantidade_Atual'].sum()
+    total_capacidade = df.groupby('Unidade')['Capacidade'].sum()
+
+    x = np.arange(len(media_ocupacao))
+    width = 0.35
+
+    for i, unidade in enumerate(cores_unidades):
+        plt.bar(i - width/2, media_capacidade[unidade], width,
+                label='Capacidade Média',
+                color=cores_unidades[unidade],
+                alpha=0.3)
+        plt.bar(i + width/2, media_ocupacao[unidade], width,
+                label='Ocupação Média' if i == 0 else "",
+                color=cores_unidades[unidade],
+                alpha=0.7)
+
+    max_altura = max(media_capacidade.max(), media_ocupacao.max())
+    for i, unidade in enumerate(cores_unidades):
+        plt.text(i, max_altura * 1.1,
+                 f'Total: {total_ocupacao[unidade]}/{total_capacidade[unidade]}',
+                 ha='center', va='bottom')
+
+    plt.xticks(x, media_ocupacao.index)
+    plt.ylabel('Número de Alunos')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.ylim(0, max_altura * 1.3)
+    plt.tight_layout()
+    st.pyplot(fig3)
+
+    # Estatísticas
+    st.subheader("Estatísticas por Unidade")
+    for unidade in df['Unidade'].unique():
+        st.write(f"\n**{unidade}:**")
+        dados_unidade = df[df['Unidade'] == unidade]
+        total_capacidade = dados_unidade['Capacidade'].sum()
+        total_atual = dados_unidade['Quantidade_Atual'].sum()
+        taxa_ocupacao = (total_atual / total_capacidade) * 100
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Capacidade Total", f"{total_capacidade}")
+        col2.metric("Ocupação Total", f"{total_atual}")
+        col3.metric("Taxa de Ocupação", f"{taxa_ocupacao:.1f}%")
+
 
     # Criar três colunas para os gráficos
     col1, col2 = st.columns(2)
@@ -110,54 +160,6 @@ try:
         plt.tight_layout()
         st.pyplot(fig2)
 
-    # Gráfico 3: Comparativo de Médias por Unidade
-    st.subheader("Comparativo de Médias por Unidade")
-    fig3, ax3 = plt.subplots(figsize=(12, 6))
-    media_ocupacao = df.groupby('Unidade')['Quantidade_Atual'].mean()
-    media_capacidade = df.groupby('Unidade')['Capacidade'].mean()
-    total_ocupacao = df.groupby('Unidade')['Quantidade_Atual'].sum()
-    total_capacidade = df.groupby('Unidade')['Capacidade'].sum()
-
-    x = np.arange(len(media_ocupacao))
-    width = 0.35
-
-    for i, unidade in enumerate(cores_unidades):
-        plt.bar(i - width/2, media_capacidade[unidade], width,
-                label='Capacidade Média',
-                color=cores_unidades[unidade],
-                alpha=0.3)
-        plt.bar(i + width/2, media_ocupacao[unidade], width,
-                label='Ocupação Média' if i == 0 else "",
-                color=cores_unidades[unidade],
-                alpha=0.7)
-
-    max_altura = max(media_capacidade.max(), media_ocupacao.max())
-    for i, unidade in enumerate(cores_unidades):
-        plt.text(i, max_altura * 1.1,
-                 f'Total: {total_ocupacao[unidade]}/{total_capacidade[unidade]}',
-                 ha='center', va='bottom')
-
-    plt.xticks(x, media_ocupacao.index)
-    plt.ylabel('Número de Alunos')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.ylim(0, max_altura * 1.3)
-    plt.tight_layout()
-    st.pyplot(fig3)
-
-    # Estatísticas
-    st.subheader("Estatísticas por Unidade")
-    for unidade in df['Unidade'].unique():
-        st.write(f"\n**{unidade}:**")
-        dados_unidade = df[df['Unidade'] == unidade]
-        total_capacidade = dados_unidade['Capacidade'].sum()
-        total_atual = dados_unidade['Quantidade_Atual'].sum()
-        taxa_ocupacao = (total_atual / total_capacidade) * 100
-
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Capacidade Total", f"{total_capacidade}")
-        col2.metric("Ocupação Total", f"{total_atual}")
-        col3.metric("Taxa de Ocupação", f"{taxa_ocupacao:.1f}%")
-
+    
 except Exception as e:
     st.error(f"Erro ao carregar os dados: {str(e)}")
