@@ -33,7 +33,7 @@ try:
         # Título da unidade centralizado e estilizado
         st.markdown(f"""
             <h3 style='
-                text-align: left;
+                text-align: center;
                 color: #333;
                 font-size: 24px;
                 padding: 10px;
