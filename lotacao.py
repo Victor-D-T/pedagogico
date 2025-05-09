@@ -21,7 +21,7 @@ try:
     st.markdown("""
         <h2 style='
             text-align: center;
-            color: #1E88E5;
+            color: #333;
             font-size: 32px;
             padding: 20px;
             margin-top: 40px;
