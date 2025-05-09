@@ -6,7 +6,7 @@ import numpy as np
 # Configurar a página
 st.set_page_config(page_title="Análise de Lotação", layout="wide")
 # st.title("Análise de Lotação das Turmas")
-st.markdown("""
+st.title("""
         <h1 style='
             text-align: left;
             color: #333;
