@@ -66,17 +66,17 @@ try:
 
         # Personalizar as métricas
         with col1:
-            st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: right;'>", unsafe_allow_html=True)
             st.metric("Capacidade Total", f"{total_capacidade}")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col2:
-            st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: right;'>", unsafe_allow_html=True)
             st.metric("Ocupação Total", f"{total_atual}")
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col3:
-            st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: right;'>", unsafe_allow_html=True)
             st.metric("Taxa de Ocupação", f"{taxa_ocupacao:.1f}%")
             st.markdown("</div>", unsafe_allow_html=True)
 
