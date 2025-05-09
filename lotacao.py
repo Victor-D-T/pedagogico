@@ -19,7 +19,7 @@ ACCENT3 = "#EF476F"
 st.markdown(f"""
     <h1 style='
         text-align: left;
-        color: {PRIMARY_BLUE};
+        color: {TEXT_COLOR};
         font-size: 36px;
         margin-bottom: 10px;
         font-family: Arial, sans-serif;
