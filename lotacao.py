@@ -81,7 +81,7 @@ try:
             st.markdown("</div>", unsafe_allow_html=True)
 
     st.subheader("Ocupação vs Capacidade por Turma")
-    fig1, ax1 = plt.subplots(figsize=(15, 4), dpi=300)
+    fig1, ax1 = plt.subplots(figsize=(15, 5), dpi=300)
     plt.subplots_adjust(top=0.85)
 
     x = np.arange(len(df_sorted['TURMA']))
