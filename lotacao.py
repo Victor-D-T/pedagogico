@@ -5,7 +5,17 @@ import numpy as np
 
 # Configurar a página
 st.set_page_config(page_title="Análise de Lotação", layout="wide")
-st.title("Análise de Lotação das Turmas")
+# st.title("Análise de Lotação das Turmas")
+st.markdown("""
+        <h1 style='
+            text-align: left;
+            color: #333;
+            font-size: 32px;
+            padding: 20px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        '>Análise de Lotação das Turmas</h1>
+    """, unsafe_allow_html=True)
 
 # Criar o DataFrame
 try:
