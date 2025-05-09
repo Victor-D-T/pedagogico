@@ -18,54 +18,54 @@ try:
     cores_unidades = {'Unid. 1': 'skyblue', 'Unid. 2': 'lightgreen', 'Unid. 3': 'salmon'}
 
     # Estatísticas
-st.markdown("""
-    <h2 style='
-        text-align: center;
-        color: #1E88E5;
-        font-size: 32px;
-        padding: 20px;
-        margin-top: 40px;
-        margin-bottom: 20px;
-    '>Estatísticas por Unidade</h2>
-""", unsafe_allow_html=True)
-
-for unidade in df['Unidade'].unique():
-    # Título da unidade centralizado e estilizado
-    st.markdown(f"""
-        <h3 style='
+    st.markdown("""
+        <h2 style='
             text-align: center;
-            color: #333;
-            font-size: 24px;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #f0f2f6;
-            border-radius: 5px;
-        '>{unidade}</h3>
+            color: #1E88E5;
+            font-size: 32px;
+            padding: 20px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        '>Estatísticas por Unidade</h2>
     """, unsafe_allow_html=True)
 
-    dados_unidade = df[df['Unidade'] == unidade]
-    total_capacidade = dados_unidade['Capacidade'].sum()
-    total_atual = dados_unidade['Quantidade_Atual'].sum()
-    taxa_ocupacao = (total_atual / total_capacidade) * 100
+    for unidade in df['Unidade'].unique():
+        # Título da unidade centralizado e estilizado
+        st.markdown(f"""
+            <h3 style='
+                text-align: center;
+                color: #333;
+                font-size: 24px;
+                padding: 10px;
+                margin-top: 20px;
+                background-color: #f0f2f6;
+                border-radius: 5px;
+            '>{unidade}</h3>
+        """, unsafe_allow_html=True)
 
-    # Criar colunas para as métricas
-    col1, col2, col3 = st.columns(3)
+        dados_unidade = df[df['Unidade'] == unidade]
+        total_capacidade = dados_unidade['Capacidade'].sum()
+        total_atual = dados_unidade['Quantidade_Atual'].sum()
+        taxa_ocupacao = (total_atual / total_capacidade) * 100
 
-    # Personalizar as métricas
-    with col1:
-        st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-        st.metric("Capacidade Total", f"{total_capacidade}")
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Criar colunas para as métricas
+        col1, col2, col3 = st.columns(3)
 
-    with col2:
-        st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-        st.metric("Ocupação Total", f"{total_atual}")
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Personalizar as métricas
+        with col1:
+            st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+            st.metric("Capacidade Total", f"{total_capacidade}")
+            st.markdown("</div>", unsafe_allow_html=True)
 
-    with col3:
-        st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-        st.metric("Taxa de Ocupação", f"{taxa_ocupacao:.1f}%")
-        st.markdown("</div>", unsafe_allow_html=True)
+        with col2:
+            st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+            st.metric("Ocupação Total", f"{total_atual}")
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        with col3:
+            st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+            st.metric("Taxa de Ocupação", f"{taxa_ocupacao:.1f}%")
+            st.markdown("</div>", unsafe_allow_html=True)
 
     st.subheader("Ocupação vs Capacidade por Turma")
     fig1, ax1 = plt.subplots(figsize=(18, 5))
