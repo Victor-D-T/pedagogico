@@ -3,4 +3,5 @@ matplotlib
 pandas
 numpy
 plotly
+openpyxl
 xlrd>=2.0.1
