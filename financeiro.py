@@ -40,7 +40,7 @@ class RelatorioFinanceiro:
         self.prepare_pie_chart_data()
         self.prepare_monthly_data()
 
-    def agrupar_outros(self, labels, sizes, threshold=0.03):
+    def agrupar_outros(self, labels, sizes, threshold=0.01):
         """Agrupa pequenas fatias em 'Outros'"""
         total = sizes.sum()
         new_labels = []
