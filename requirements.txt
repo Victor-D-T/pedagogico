@@ -2,4 +2,5 @@ streamlit
 matplotlib
 pandas
 numpy
+plotly
 xlrd>=2.0.1
