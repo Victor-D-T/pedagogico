@@ -21,10 +21,14 @@ class RelatorioFinanceiro:
         except Exception as e:
             st.error(f"Erro ao carregar dados: {e}")
 
-    def process_data(self):
+    def process_data(self, selected_month=None):
         """Processa os dados para análise"""
         # Identificar colunas de meses
         self.meses_df = [col for col in self.df_fluxo.columns if col in self.meses]
+
+        # Se um mês específico for selecionado, usar apenas essa coluna
+        if selected_month and selected_month in self.meses_df:
+            self.meses_df = [selected_month]
 
         # Filtrar receitas e despesas
         self.receitas = self.df_fluxo[
@@ -77,16 +81,12 @@ class RelatorioFinanceiro:
         )
 
     def prepare_monthly_data(self):
-
         """Prepara dados para o gráfico de evolução mensal"""
         self.receitas_mensais = self.receitas[self.meses_df].sum()
         self.despesas_mensais = self.despesas[self.meses_df].sum()
         self.lucro_mensal = self.receitas_mensais + self.despesas_mensais
 
-
     def plot_pie_chart(self, sizes, labels, title):
-
-
         """Plota um gráfico de pizza interativo"""
         fig = go.Figure(
             data=[go.Pie(
@@ -206,7 +206,35 @@ class RelatorioFinanceiro:
 
         st.plotly_chart(fig, use_container_width=True)
 
-    def render(self, filtros=None):
+    def render(self):
         """Renderiza todo o relatório financeiro"""
+        # Adicionar seletor de mês
+        st.markdown(f"<h2 style='color:{THEME['TEXT_COLOR']};'>Relatório Financeiro</h2>", unsafe_allow_html=True)
+
+        # Adicionar opção "Todos os meses"
+        meses_opcoes = ['Todos os meses'] + self.meses_df
+        selected_month = st.selectbox('Selecione o mês:', meses_opcoes)
+
+        # Processar dados com base no mês selecionado
+        if selected_month == 'Todos os meses':
+            self.process_data()
+        else:
+            self.process_data(selected_month)
+
+        # Mostrar totais do período selecionado
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            total_receitas = self.receitas[self.meses_df].sum().sum()
+            st.metric("Total Receitas", f"R$ {total_receitas:,.2f}")
+        with col2:
+            total_despesas = self.despesas[self.meses_df].sum().sum()
+            st.metric("Total Despesas", f"R$ {total_despesas:,.2f}")
+        with col3:
+            lucro_total = total_receitas + total_despesas
+            st.metric("Lucro Total", f"R$ {lucro_total:,.2f}")
+
         self.plot_receitas_despesas()
-        self.plot_evolucao_mensal()
+
+        # Só mostrar evolução mensal quando todos os meses estiverem selecionados
+        if selected_month == 'Todos os meses':
+            self.plot_evolucao_mensal()
