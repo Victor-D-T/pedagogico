@@ -3,6 +3,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from utils.styles import THEME
+from comparativo_crescimento import ComparativoCrescimento
+
+
 
 class RelatorioFinanceiro:
     def __init__(self):
@@ -20,6 +23,7 @@ class RelatorioFinanceiro:
             self.df_fluxo.columns = [c.strip() for c in self.df_fluxo.columns]
         except Exception as e:
             st.error(f"Erro ao carregar dados: {e}")
+        
 
     def process_data(self, selected_month=None):
         """Processa os dados para análise"""
@@ -171,7 +175,7 @@ class RelatorioFinanceiro:
 
         # Adicionar linha de lucro
         fig.add_trace(go.Scatter(
-            x=self.meses_df,
+            x=self.meses_df,   
             y=self.lucro_mensal,
             name='Lucro',
             line=dict(color=THEME['LUCRO_COLOR'], width=3),
@@ -205,36 +209,46 @@ class RelatorioFinanceiro:
         )
 
         st.plotly_chart(fig, use_container_width=True)
-
+    def render_comparativo_crescimento(self):
+        """Renderiza a análise comparativa de crescimento"""
+        comparativo = ComparativoCrescimento(self.df_fluxo)
+        comparativo.render()
+    
     def render(self):
         """Renderiza todo o relatório financeiro"""
-        # Adicionar seletor de mês
+        # Código existente...
         st.markdown(f"<h2 style='color:{THEME['TEXT_COLOR']};'>Relatório Financeiro</h2>", unsafe_allow_html=True)
 
-        # Adicionar opção "Todos os meses"
-        meses_opcoes = ['Todos os meses'] + self.meses_df
-        selected_month = st.selectbox('Selecione o mês:', meses_opcoes)
+        # Criar abas
+        tab1, tab2 = st.tabs(["📊 Visão Geral", "📈 Análise de Crescimento"])
+        
+        with tab1:
+            # Código existente do relatório (seletor de mês, métricas, gráficos)
+            meses_opcoes = ['Todos os meses'] + self.meses_df
+            selected_month = st.selectbox('Selecione o mês:', meses_opcoes)
 
-        # Processar dados com base no mês selecionado
-        if selected_month == 'Todos os meses':
-            self.process_data()
-        else:
-            self.process_data(selected_month)
+            if selected_month == 'Todos os meses':
+                self.process_data()
+            else:
+                self.process_data(selected_month)
 
-        # Mostrar totais do período selecionado
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            total_receitas = self.receitas[self.meses_df].sum().sum()
-            st.metric("Total Receitas", f"R$ {total_receitas:,.2f}")
-        with col2:
-            total_despesas = self.despesas[self.meses_df].sum().sum()
-            st.metric("Total Despesas", f"R$ {total_despesas:,.2f}")
-        with col3:
-            lucro_total = total_receitas + total_despesas
-            st.metric("Lucro Total", f"R$ {lucro_total:,.2f}")
+            # Mostrar totais do período selecionado
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                total_receitas = self.receitas[self.meses_df].sum().sum()
+                st.metric("Total Receitas", f"R$ {total_receitas:,.2f}")
+            with col2:
+                total_despesas = self.despesas[self.meses_df].sum().sum()
+                st.metric("Total Despesas", f"R$ {total_despesas:,.2f}")
+            with col3:
+                lucro_total = total_receitas + total_despesas
+                st.metric("Lucro Total", f"R$ {lucro_total:,.2f}")
 
-        self.plot_receitas_despesas()
+            self.plot_receitas_despesas()
 
-        # Só mostrar evolução mensal quando todos os meses estiverem selecionados
-        if selected_month == 'Todos os meses':
-            self.plot_evolucao_mensal()
+            if selected_month == 'Todos os meses':
+                self.plot_evolucao_mensal()
+        
+        with tab2:
+            # Nova funcionalidade de análise comparativa
+            self.render_comparativo_crescimento()
