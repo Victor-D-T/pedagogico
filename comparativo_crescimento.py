@@ -233,7 +233,7 @@ class ComparativoCrescimento:
             return  
 
         # Tabs para diferentes visualizações
-        tab1 = st.tabs(["Evolução"])
+        tab1, = st.tabs(["Evolução"])
 
         with tab1:
             self.plot_evolucao_por_categoria()
