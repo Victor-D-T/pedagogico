@@ -34,6 +34,7 @@ class DashboardEscolar:
 
     def run(self):
         self.setup_header()
+        self.setup_file_upload()
         tab1, tab2 = st.tabs(["📊 Relatório Financeiro", "👥 Relatório de Lotação"])
 
         with tab1:
@@ -52,6 +53,36 @@ class DashboardEscolar:
             )
             filtros = {"unidade": unidade}
             self.lotacao.render(filtros)
+
+    def setup_file_upload(self):
+        """Sistema de upload de arquivos"""
+        st.sidebar.title("📁 Gerenciar Arquivos")
+        
+        # Upload do arquivo financeiro
+        uploaded_finance = st.sidebar.file_uploader(
+            "Upload Fluxo de Caixa", 
+            type=['xlsx', 'xls'],
+            key='finance_file'
+        )
+        
+        if uploaded_finance:
+            with open('fluxo_de_caixa.xlsx', 'wb') as f:
+                f.write(uploaded_finance.getbuffer())
+            st.sidebar.success("✅ Arquivo financeiro carregado!")
+        
+        # Upload do arquivo de lotação
+        uploaded_lotacao = st.sidebar.file_uploader(
+            "Upload Dados de Lotação", 
+            type=['xlsx', 'xls'],
+            key='lotacao_file'
+        )
+        
+        if uploaded_lotacao:
+            with open('lotacao.xls', 'wb') as f:
+                f.write(uploaded_lotacao.getbuffer())
+            st.sidebar.success("✅ Arquivo de lotação carregado!")
+
+
 
 if __name__ == "__main__":
     dashboard = DashboardEscolar()
