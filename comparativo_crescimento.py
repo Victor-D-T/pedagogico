@@ -169,121 +169,81 @@ class ComparativoCrescimento:
         
         return fig
 
-    def plot_ranking_crescimento(self, df_completo):
-        """Ranking das categorias por crescimento"""
-        
-        # Ordenar por crescimento absoluto
-        df_sorted = df_completo.sort_values('Crescimento_Absoluto_%', ascending=True)
-        
-        # Criar cores baseadas no tipo e crescimento
-        colors = []
-        for _, row in df_sorted.iterrows():
-            if row['Crescimento_Absoluto_%'] >= 0:
-                colors.append('#4CAF50' if row['Tipo'] == 'Receita' else '#8BC34A')
-            else:
-                colors.append('#F44336' if row['Tipo'] == 'Receita' else '#FF5722')
-        
-        fig = go.Figure(go.Bar(
-            x=df_sorted['Crescimento_Absoluto_%'],
-            y=df_sorted['Categoria'],
-            orientation='h',
-            marker_color=colors,
-            text=df_sorted['Crescimento_Absoluto_%'].apply(lambda x: f'{x:.1f}%'),
-            textposition='outside'
-        ))
-        
+    
+    def plot_evolucao_por_categoria(self):
+        """Gráfico de evolução por categoria, com possibilidade de múltiplos filtros"""
+
+        st.markdown(f"<h3 style='color:{THEME['TEXT_COLOR']};'>📈 Evolução por Categoria</h3>", unsafe_allow_html=True)
+
+        # Unificar receitas e despesas para permitir seleção conjunta
+        df_concat = pd.concat([self.receitas.assign(Tipo='Receita'), self.despesas.assign(Tipo='Despesa')], ignore_index=True)
+
+        # Seleção de categorias
+        categorias_disponiveis = df_concat['Descrição'].unique()
+        categorias_selecionadas = st.multiselect(
+            "Selecione as categorias para visualizar a evolução:",
+            options=categorias_disponiveis,
+            default=categorias_disponiveis[:1]  # seleciona a primeira como padrão
+        )
+
+        if not categorias_selecionadas:
+            st.warning("Selecione pelo menos uma categoria.")
+            return
+
+        # Filtrar apenas as categorias selecionadas
+        df_filtrado = df_concat[df_concat['Descrição'].isin(categorias_selecionadas)]
+
+        # Plotar gráfico
+        fig = go.Figure()
+
+        for _, row in df_filtrado.iterrows():
+            fig.add_trace(go.Scatter(
+                x=self.meses_df,
+                y=row[self.meses_df].fillna(0),
+                mode='lines+markers',
+                name=f"{row['Descrição']} ({row['Tipo']})"
+            ))
+
         fig.update_layout(
-            title='Ranking de Crescimento/Queda por Categoria',
-            xaxis_title='Crescimento/Queda (%)',
-            yaxis_title='Categorias',
+            title='Evolução Mensal por Categoria',
+            xaxis_title='Meses',
+            yaxis_title='Valor (R$)',
             paper_bgcolor=THEME['BG_COLOR'],
             plot_bgcolor=THEME['BG_COLOR'],
             font=dict(color=THEME['TEXT_COLOR']),
-            height=max(400, len(df_sorted) * 25)
+            legend=dict(
+                bgcolor=THEME['CARD_COLOR'],
+                font=dict(color=THEME['TEXT_COLOR'])
+            )
         )
-        
-        # Linha de referência no zero
-        fig.add_vline(x=0, line_dash="dash", line_color="white", opacity=0.5)
-        
-        return fig
 
-    def exibir_insights(self, df_completo, df_receitas, df_despesas):
-        """Exibe insights principais da análise"""
-        
-        st.markdown(f"<h3 style='color:{THEME['TEXT_COLOR']};'>📊 Insights Principais</h3>", unsafe_allow_html=True)
-        
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            melhor_receita = df_receitas.loc[df_receitas['Crescimento_Absoluto_%'].idxmax()]
-            st.metric(
-                "Melhor Receita", 
-                melhor_receita['Categoria'][:20] + "...", 
-                f"+{melhor_receita['Crescimento_Absoluto_%']:.1f}%"
-            )
-        
-        with col2:
-            pior_receita = df_receitas.loc[df_receitas['Crescimento_Absoluto_%'].idxmin()]
-            st.metric(
-                "Receita em Queda", 
-                pior_receita['Categoria'][:20] + "...", 
-                f"{pior_receita['Crescimento_Absoluto_%']:.1f}%"
-            )
-        
-        with col3:
-            maior_despesa = df_despesas.loc[df_despesas['Crescimento_Absoluto_%'].idxmax()]
-            st.metric(
-                "Maior Aumento Despesa", 
-                maior_despesa['Categoria'][:20] + "...", 
-                f"+{maior_despesa['Crescimento_Absoluto_%']:.1f}%"
-            )
-        
-        with col4:
-            menor_despesa = df_despesas.loc[df_despesas['Crescimento_Absoluto_%'].idxmin()]
-            st.metric(
-                "Maior Redução Despesa", 
-                menor_despesa['Categoria'][:20] + "...", 
-                f"{menor_despesa['Crescimento_Absoluto_%']:.1f}%"
-            )
+        st.plotly_chart(fig, use_container_width=True)
+
 
     def render(self):
         """Renderiza a análise comparativa completa"""
         
-        st.markdown(f"<h2 style='color:{THEME['TEXT_COLOR']};'>📈 Análise Comparativa de Crescimento</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='color:{THEME['TEXT_COLOR']};'>Análise Comparativa de Crescimento</h2>", unsafe_allow_html=True)
         
         # Gerar dados
         df_completo, df_receitas, df_despesas = self.gerar_relatorio_comparativo()
         
         if df_completo.empty:
             st.warning("Não há dados suficientes para análise de crescimento.")
-            return
-        
-        # Exibir insights
-        self.exibir_insights(df_completo, df_receitas, df_despesas)
-        
+            return  
+
         # Tabs para diferentes visualizações
-        tab1, tab2, tab3, tab4 = st.tabs(["📊 Comparativo", "🎯 Ranking", "📈 Volatilidade", "📋 Tabela Detalhada"])
-        
+        tab1, tab4, tab5 = st.tabs([" Comparativo","Tabela Detalhada", "Evolução"])
+
+        with tab5:
+            self.plot_evolucao_por_categoria()
+
+                
         with tab1:
             fig_barras = self.plot_comparativo_barras(df_completo)
             st.plotly_chart(fig_barras, use_container_width=True)
         
-        with tab2:
-            fig_ranking = self.plot_ranking_crescimento(df_completo)
-            st.plotly_chart(fig_ranking, use_container_width=True)
-        
-        with tab3:
-            fig_scatter = self.plot_volatilidade_scatter(df_completo)
-            st.plotly_chart(fig_scatter, use_container_width=True)
-            
-            st.markdown("""
-            **Interpretação do Gráfico:**
-            - **Eixo X**: Crescimento/Queda absoluta (positivo = crescimento, negativo = queda)
-            - **Eixo Y**: Volatilidade (maior = mais instável)
-            - **Tamanho**: Valor final da categoria
-            - **Quadrante superior direito**: Alto crescimento, alta volatilidade (oportunidade com risco)
-            - **Quadrante inferior direito**: Alto crescimento, baixa volatilidade (melhor cenário)
-            """)
+
         
         with tab4:
             st.dataframe(
