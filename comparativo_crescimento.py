@@ -233,26 +233,7 @@ class ComparativoCrescimento:
             return  
 
         # Tabs para diferentes visualizações
-        tab1, tab4, tab5 = st.tabs([" Comparativo","Tabela Detalhada", "Evolução"])
+        tab1 = st.tabs(["Evolução"])
 
-        with tab5:
-            self.plot_evolucao_por_categoria()
-
-                
         with tab1:
-            fig_barras = self.plot_comparativo_barras(df_completo)
-            st.plotly_chart(fig_barras, use_container_width=True)
-        
-
-        
-        with tab4:
-            st.dataframe(
-                df_completo.style.format({
-                    'Crescimento_Medio_Mensal_%': '{:.2f}%',
-                    'Crescimento_Absoluto_%': '{:.2f}%',
-                    'Volatilidade_%': '{:.2f}%',
-                    'Valor_Inicial': 'R$ {:,.2f}',
-                    'Valor_Final': 'R$ {:,.2f}'
-                }),
-                use_container_width=True
-            )
+            self.plot_evolucao_por_categoria()
